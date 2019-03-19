@@ -1,0 +1,33 @@
+language: cpp
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      compiler: gcc
+    - os: linux
+      dist: xenial
+      compiler: clang
+    - os: osx
+      osx_image: xcode10.1
+      compiler: gcc
+    - os: osx
+      osx_image: xcode10.1
+      compiler: clang
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-7
+  homebrew:
+    packages:
+      - cmake
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh ./ci/travis_setup_linux.sh; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh ./ci/travis_setup_osx.sh; fi
+
+script:
+  - sh build.sh
